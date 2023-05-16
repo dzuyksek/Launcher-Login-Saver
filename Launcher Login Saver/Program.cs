@@ -42,9 +42,36 @@
 
                 Console.WriteLine($"{platform} - {jmeno}, {heslo}");
             }
+            Console.ReadKey();
+        }
+
+        public static void UkazUdajePodlePlatformy()
+        {
+            Console.Clear();
+            Console.WriteLine($"Vyber launcher:\n");
+            foreach (var platform in platformy) Console.WriteLine(platform);
+            Console.WriteLine();
+            string volbaLauncher = Console.ReadLine();
+
+            if (!File.Exists(volbaLauncher + ".txt"))
+            {
+                Console.WriteLine($"{volbaLauncher} - nezadáno");
+                return;
+            }
+
+            string[] data = File.ReadAllText(volbaLauncher + ".txt").Split(';');
+            string jmeno = data[0];
+            string heslo = data[1];
+
+            Console.WriteLine($"{volbaLauncher} - {jmeno}, {heslo}");
+            Console.ReadKey();
         }
     }
-
+    public static void UkonciProgram()
+    {
+        Environment.Exit(0);
+    }
+    
     public static void Main()
     {
         while (Udaje.cyklus == true)
@@ -52,15 +79,12 @@
             Console.Clear();
             try
             {
-                Console.WriteLine(" přidat(p), zobrazit(z)");
-                char vyber = char.Parse(Console.ReadLine());
+                char vyber = AnsiConsole.Ask<char>("[green]Přidat (p), Zobrazit (z), Jen vybraná platforma (v), Ukončit (u): [/]");
                 if (vyber == 'p')
                 {
                     Console.Clear();
-                    Console.WriteLine("Zadej Jmeno ");
-                    string jmeno = Console.ReadLine();
-                    Console.WriteLine("Zadej heslo loupaku");
-                    string heslo = Console.ReadLine();
+                    string jmeno = AnsiConsole.Ask<string>("[blue]Zadej jmeno: [/]");
+                    string heslo = AnsiConsole.Ask<string>("[blue]Zadej heslo: [/]");
                     Program.PřidejUdaje(jmeno, heslo);
                 }
 
@@ -68,6 +92,17 @@
                 else if (vyber == 'z')
                 {
                     Program.UkazVsechnyUdaje();
+                }
+
+                else if (vyber == 'v')
+                {
+                    Program.UkazUdajePodlePlatformy();
+                }
+                else if (vyber == 'u') 
+                { 
+                    UkonciProgram();
+
+
                 }
             }
             catch (Exception)

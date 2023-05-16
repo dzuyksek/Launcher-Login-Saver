@@ -1,1 +1,3 @@
-﻿ZaverecnyProjekt.Main();
+﻿global using Spectre.Console;
+
+ZaverecnyProjekt.Main();
